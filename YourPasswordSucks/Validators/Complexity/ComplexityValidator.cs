@@ -8,15 +8,27 @@ namespace YourPasswordSucks.Validators.Complexity
     /// </summary>
     internal class ComplexityValidator : ValidatorBase
     {
+        private readonly bool _checkCharacterDiversity;
+        private readonly bool _checkRepeatedCharacters;
+        private readonly int _minimumPasswordLength;
+
         private static readonly Func<char, bool>[] CharacterRules =
             {char.IsDigit, char.IsLower, char.IsUpper, CharUtils.IsSpecial};
+
+        public ComplexityValidator(bool checkCharacterDiversity, bool checkRepeatedCharacters, int minimumPasswordLength)
+        {
+            _checkCharacterDiversity = checkCharacterDiversity;
+            _checkRepeatedCharacters = checkRepeatedCharacters;
+            _minimumPasswordLength = minimumPasswordLength;
+        }
+
         public override bool Validate(string password)
         {
             return
                 !string.IsNullOrWhiteSpace(password)
-                && password.Length >= 10
-                && CheckCharacters(password)
-                && CheckRepetition(password);
+                && password.Length >= _minimumPasswordLength
+                && (!_checkCharacterDiversity || CheckCharacters(password))
+                && (!_checkRepeatedCharacters || CheckRepetition(password));
         }
 
         public override string Description =>
