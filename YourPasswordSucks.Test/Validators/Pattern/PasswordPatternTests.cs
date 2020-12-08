@@ -1,9 +1,9 @@
 ﻿using System;
-using Should;
+using FluentAssertions;
 using Xunit;
 using YourPasswordSucks.Validators.Pattern;
 
-namespace YourPasswordSucks.Tests.Validators.Pattern
+namespace YourPasswordSucks.Test.Validators.Pattern
 {
     public class PasswordPatternTests
     {
@@ -16,7 +16,7 @@ namespace YourPasswordSucks.Tests.Validators.Pattern
         public void PasswordPatternMatches(string pattern, string password)
         {
             var passwordPattern = new PasswordPattern(pattern);
-            passwordPattern.IsMatch(password).ShouldBeTrue();
+            passwordPattern.IsMatch(password).Should().BeTrue();
         }
 
         [Theory]
@@ -33,7 +33,7 @@ namespace YourPasswordSucks.Tests.Validators.Pattern
         public void PasswordPatternNotMatches(string pattern, string password)
         {
             var passwordPattern = new PasswordPattern(pattern);
-            passwordPattern.IsMatch(password).ShouldBeFalse();
+            passwordPattern.IsMatch(password).Should().BeFalse();
         }
 
         [Theory]
@@ -41,7 +41,7 @@ namespace YourPasswordSucks.Tests.Validators.Pattern
         [InlineData("xiegf")]
         public void PasswordPatternThrowsOnInvalidPattern(string pattern)
         {
-            new Action(()=>new PasswordPattern(pattern)).ShouldThrow<ArgumentOutOfRangeException>();
+            new Action(() => new PasswordPattern(pattern)).Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Theory]
@@ -49,7 +49,7 @@ namespace YourPasswordSucks.Tests.Validators.Pattern
         [InlineData(null)]
         public void PasswordPatternThrowsOnNullOrEmptyPattern(string pattern)
         {
-            new Action(() => new PasswordPattern(pattern)).ShouldThrow<ArgumentException>();
+            new Action(() => new PasswordPattern(pattern)).Should().Throw<ArgumentException>();
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Should;
+﻿using FluentAssertions;
 using Xunit;
 using YourPasswordSucks.Validators.Pattern;
 
-namespace YourPasswordSucks.Tests.Validators.Pattern
+namespace YourPasswordSucks.Test.Validators.Pattern
 {
     public class PatternValidatorTests
     {
@@ -20,7 +20,7 @@ namespace YourPasswordSucks.Tests.Validators.Pattern
         [InlineData("abcdefg1")]
         public void BadPassword(string password)
         {
-            _validator.Validate(password).ShouldBeFalse();
+            _validator.Validate(password).Should().BeFalse();
         }
 
         [Theory]
@@ -29,7 +29,7 @@ namespace YourPasswordSucks.Tests.Validators.Pattern
         [InlineData("1984Orwell^^")]
         public void GoodPassword(string password)
         {
-            _validator.Validate(password).ShouldBeTrue();
+            _validator.Validate(password).Should().BeTrue();
         }
     }
 }
